@@ -8,4 +8,10 @@ export const AppDataSource = new DataSource({
   username: DB_NAME,
   password: DB_PASSWORD,
   database: DB_NAME,
+
+  synchronize: false,
+  migrations: [__dirname + '/migration/**/*{.js,.ts}'],
+  migrationsRun: true,
+  migrationsTableName: 'migrations',
+  migrationsTransactionMode: 'all',
 });
