@@ -1,16 +1,11 @@
-import { Sequelize } from 'sequelize';
+import { DataSource } from 'typeorm';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './env.config';
 
-export const sequelize = new Sequelize(
-  DB_NAME!,
-  DB_USER!,
-  DB_PASSWORD!,
-  {
-    host: DB_HOST,
-    dialect: 'postgres',
-    port: Number(DB_PORT),
-    define:{
-      timestamps: true
-    },
-  }
-);
+export const AppDataSource = new DataSource({
+  type: 'postgres',
+  host: DB_HOST,
+  port: Number(DB_PORT),
+  username: DB_NAME,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+});

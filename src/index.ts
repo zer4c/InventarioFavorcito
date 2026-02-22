@@ -1,10 +1,11 @@
 import Server from './config/server.config';
-import { sequelize } from './config/database.config';
+import { AppDataSource } from './config/database.config';
 import { SERVER_PORT } from './config/env.config';
+import "reflect-metadata"
 
 async function connectDatabase() {
   try {
-    await sequelize.authenticate();
+    await AppDataSource.initialize();
     console.log('Database Connected');
   } catch (error) {
     console.error(error);
