@@ -7,8 +7,8 @@
     "target": "esnext",
     "allowJs": true,
     "esModuleInterop": true,
-    "isolatedModules": true
+    "isolatedModules": true,
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
