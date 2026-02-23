@@ -1,2 +1,41 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { IsBoolean, IsInt, Min } from 'class-validator';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Product } from '../product/product.entities';
+import { Order } from '../Order/order.entities';
 
+export class Inventory {
+  @PrimaryGeneratedColumn('increment')
+  id!: number;
+
+  @Column()
+  @IsInt()
+  @Min(0)
+  stock!: number;
+
+  @OneToOne(() => Product)
+  @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
+  product!: Product;
+}
+
+export class InventoryHistory {
+  @PrimaryGeneratedColumn('increment')
+  id!: number;
+
+  @Column()
+  @IsBoolean()
+  isOut!: boolean;
+
+  @OneToOne(() => Product)
+  @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
+  product!: Product;
+
+  @OneToOne(() => Order, { nullable: true })
+  @JoinColumn({ name: 'OrderId', referencedColumnName: 'id' })
+  order?: Order;
+}
