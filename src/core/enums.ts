@@ -7,16 +7,3 @@ export enum OrderStatus {
   FINISHED = "finished",
   CANCELLED = "cancelles",
 } 
-
-
-export enum Cities{
-  LA_PAZ = "La paz",
-  COCHABAMBA = "Cochabamba",
-  ORURO = "Oruro",
-  SANTA_CRUZ = "Santa Cruz",
-  POTOSI = "Potosi",
-  TARIJA = "Tarija",
-  BENI = "Beni",
-  PANDO = "Pando",
-  CHUQUISACA = "Chuquisaca",
-}

@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Cities, OrderStatus } from '../../core/enums';
+import { OrderStatus } from '../../core/enums';
 import { IsInt, Length, Min } from 'class-validator';
 import { Product } from '../product/product.entities';
 
@@ -24,12 +24,6 @@ export class Order {
   @Length(5, 50)
   clientName!: string;
 
-  @Column({
-    type: 'enum',
-    enum: Cities,
-  })
-  city!: Cities;
-
   @Column()
   @Length(5, 50)
   address!: string;
@@ -42,4 +36,7 @@ export class Order {
   @ManyToOne(() => Product, (product) => product.orders)
   @JoinColumn({ name: 'userID', referencedColumnName: 'id' })
   product!: Product;
+
+  
+
 }
