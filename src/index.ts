@@ -1,7 +1,6 @@
 import Server from './config/server.config';
 import { AppDataSource } from './config/database.config';
 import { SERVER_PORT } from './config/env.config';
-import "reflect-metadata"
 
 async function connectDatabase() {
   try {

@@ -2,14 +2,15 @@
   "compilerOptions": {
     "strict": true,
     "moduleDetection": "force",
-    "moduleResolution": "bundler",
-    "module": "esnext",
+    "moduleResolution": "node",
+    "module": "commonjs",
     "target": "esnext",
     "allowJs": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "rootDir": ".",
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

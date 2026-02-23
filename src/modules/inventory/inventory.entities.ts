@@ -9,6 +9,7 @@ import {
 import { Product } from '../product/product.entities';
 import { Order } from '../Order/order.entities';
 
+@Entity()
 export class Inventory {
   @PrimaryGeneratedColumn('increment')
   id!: number;
@@ -23,9 +24,15 @@ export class Inventory {
   product!: Product;
 }
 
+@Entity()
 export class InventoryHistory {
   @PrimaryGeneratedColumn('increment')
   id!: number;
+
+  @Column()
+  @IsInt()
+  @Min(0)
+  stock!: number;
 
   @Column()
   @IsBoolean()
