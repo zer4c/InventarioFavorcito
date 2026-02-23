@@ -6,6 +6,7 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
+import { Order } from '../Order/order.entities';
 
 @Entity()
 export class Product {
@@ -18,14 +19,14 @@ export class Product {
   @Column()
   isActive!: boolean;
 
-  @Column()
-  stock!: number;
-
   @CreateDateColumn()
   createdAt!: Date;
 
   @OneToMany(() => ProductHistory, (history) => history.product)
   history! : ProductHistory[]
+
+  @OneToMany(() => Order, (order) => order.product)
+  orders! : Order[]
 
 }
 
@@ -39,9 +40,6 @@ export class ProductHistory {
 
   @Column()
   IsActiveChanged!: boolean;
-
-  @Column()
-  stockChanged!: boolean;
 
   @CreateDateColumn()
   createAt!: Date;
