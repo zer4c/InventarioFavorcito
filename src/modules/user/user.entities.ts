@@ -4,15 +4,15 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm';
-import { UserRole } from '../../core/enums';
+import { UserRole, UserRoleType } from '../../core/enums';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('increment')
   id!: Number;
 
-  @Column({ type: 'enum', enum: UserRole })
-  role!: UserRole;
+  @Column({ type: 'enum', enum: UserRole.options })
+  role!: UserRoleType;
 
   @CreateDateColumn()
   createdAt!: Date;

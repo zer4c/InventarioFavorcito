@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { OrderStatus } from '../../core/enums';
+import { OrderStatus, OrderStatusType } from '../../core/enums';
 import { IsInt, Length, Min } from 'class-validator';
 import { Product } from '../product/product.entities';
 
@@ -16,9 +16,9 @@ export class Order {
 
   @Column({
     type: 'enum',
-    enum: OrderStatus,
+    enum: OrderStatus.options,
   })
-  state!: OrderStatus;
+  state!: OrderStatusType;
 
   @Column()
   @Length(5, 50)
