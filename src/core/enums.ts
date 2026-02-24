@@ -3,7 +3,7 @@ export enum UserRole {
 }
 
 export enum OrderStatus {
-  QUEUE = "queue",
-  FINISHED = "finished",
-  CANCELLED = "cancelles",
-} 
+  QUEUE = 'queue',
+  FINISHED = 'finished',
+  CANCELLED = 'cancelles',
+}

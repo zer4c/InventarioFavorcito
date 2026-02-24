@@ -23,11 +23,10 @@ export class Product {
   createdAt!: Date;
 
   @OneToMany(() => ProductHistory, (history) => history.product)
-  history! : ProductHistory[]
+  history!: ProductHistory[];
 
   @OneToMany(() => Order, (order) => order.product)
-  orders! : Order[]
-
+  orders!: Order[];
 }
 
 @Entity()
@@ -45,6 +44,5 @@ export class ProductHistory {
   createAt!: Date;
 
   @ManyToOne(() => Product, (product) => product.history)
-  product!: Product
-
+  product!: Product;
 }

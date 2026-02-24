@@ -36,7 +36,4 @@ export class Order {
   @ManyToOne(() => Product, (product) => product.orders)
   @JoinColumn({ name: 'userID', referencedColumnName: 'id' })
   product!: Product;
-
-  
-
 }
