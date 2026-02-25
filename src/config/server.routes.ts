@@ -7,7 +7,7 @@ const router = Router();
 router.use('/check', healthRoutes);
 router.use('/product', productRoutes);
 
-router.use('/*', (req, res) => {
+router.use('/*path', (req, res) => {
   res.status(404).send({
     detail: 'route not found',
     ok: false,
