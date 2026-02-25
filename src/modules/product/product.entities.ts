@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Order } from '../Order/order.entities';
 
@@ -18,6 +19,9 @@ export class Product {
 
   @Column()
   isActive!: boolean;
+
+  @Column()
+  isDeleted!: boolean;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -40,9 +44,16 @@ export class ProductHistory {
   @Column()
   IsActiveChanged!: boolean;
 
+  @Column()
+  isDeletedChange!: boolean;
+
+  @Column()
+  productId!: number;
+
   @CreateDateColumn()
   createAt!: Date;
 
   @ManyToOne(() => Product, (product) => product.history)
+  @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
   product!: Product;
 }

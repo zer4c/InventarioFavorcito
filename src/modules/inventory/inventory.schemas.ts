@@ -10,7 +10,9 @@ export const InventoryResponse = InventoryCreate.extend({
   id: z.int(),
 });
 
-export const InventoryPatch = InventoryCreate.partial();
+export const InventoryPatch = InventoryCreate.partial().refine(
+  (data) => Object.keys(data).length > 0
+);;
 
 export type InventoryCreateType = z.infer<typeof InventoryCreate>;
 export type InventoryResponseType = z.infer<typeof InventoryResponse>;

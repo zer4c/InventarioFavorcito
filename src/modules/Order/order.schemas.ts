@@ -16,7 +16,9 @@ export const OrderResponse = OrderCreate.extend({
   id: z.int()
 });
 
-export const OrderPatch = OrderCreate.partial();
+export const OrderPatch = OrderCreate.partial().refine(
+  (data) => Object.keys(data).length > 0
+);;
 
 export type OrderCreateType = z.infer<typeof OrderCreate>;
 export type OrderResponseType = z.infer<typeof OrderResponse>;

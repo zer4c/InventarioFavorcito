@@ -43,6 +43,6 @@ export class InventoryHistory {
   product!: Product;
 
   @OneToOne(() => Order, { nullable: true })
-  @JoinColumn({ name: 'OrderId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'orderId', referencedColumnName: 'id' })
   order?: Order;
 }
