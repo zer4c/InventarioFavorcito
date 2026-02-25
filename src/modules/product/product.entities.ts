@@ -20,7 +20,7 @@ export class Product {
   @Column()
   isActive!: boolean;
 
-  @Column()
+  @Column({default: false})
   isDeleted!: boolean;
 
   @CreateDateColumn()

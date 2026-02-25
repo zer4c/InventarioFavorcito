@@ -64,14 +64,6 @@ async function createProductHistory(id: number, product?: ProductPatchType) {
   await AppDataSource.getRepository(ProductHistory).save(productHistory);
 }
 
-async function getByIdInternal(id: number) {
-  return await AppDataSource.getRepository(Product)
-    .createQueryBuilder('product')
-    .where('product.id = :id', { id })
-    .where('product.isDeleted = false')
-    .getOneOrFail();
-}
-
 export default {
   getById,
   getProducts,
