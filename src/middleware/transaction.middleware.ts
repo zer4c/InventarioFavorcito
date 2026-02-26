@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { createQueryRunner } from '../config/database.config';
+import { AppDataSource } from '../config/database.config';
 
 export async function withTransaction(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction,
 ) {
@@ -10,12 +10,22 @@ export async function withTransaction(
   res.locals.queryRunner = queryRunner;
 
   const cleanup = async () => {
-    if (res.statusCode >= 200 && res.statusCode < 400) {
-      await queryRunner.commitTransaction();
-    } else {
-      await queryRunner.rollbackTransaction();
+    try {
+      if (!queryRunner.isReleased) {
+        if (res.statusCode >= 200 && res.statusCode < 400) {
+          await queryRunner.commitTransaction();
+        } else {
+          await queryRunner.rollbackTransaction();
+        }
+        await queryRunner.release();
+      }
+    } catch (error) {
+      if (!queryRunner.isReleased) {
+        try {
+          await queryRunner.release();
+        } catch (_) {}
+      }
     }
-    await queryRunner.release();
   };
 
   res.on('finish', cleanup);
@@ -28,4 +38,11 @@ export async function withTransaction(
   });
 
   next();
+}
+
+async function createQueryRunner() {
+  const queryRunner = AppDataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+  return queryRunner;
 }

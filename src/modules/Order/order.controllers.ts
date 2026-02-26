@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import OrderService from './order.services';
 import inventoryServices from '../inventory/inventory.services';
-import { InventoryPatch } from '../inventory/inventory.schemas';
-import { ZodError } from 'zod';
 import { OrderResponseType } from './order.schemas';
 import { QueryRunner } from 'typeorm';
 

@@ -10,12 +10,12 @@ import {
 } from './env.config';
 import 'reflect-metadata';
 
-const isTest = SERVER_PORT === 'test'
+const isTest = SERVER_PORT === 'test';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: DB_HOST,
-  port: isTest? Number(DB_TEST_PORT) : Number(DB_PORT),
+  port: isTest ? Number(DB_TEST_PORT) : Number(DB_PORT),
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
@@ -29,10 +29,3 @@ export const AppDataSource = new DataSource({
   migrationsTableName: 'migrations',
   migrationsTransactionMode: 'all',
 });
-
-export async function createQueryRunner() {
-  const queryRunner = AppDataSource.createQueryRunner();
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
-  return queryRunner;
-}

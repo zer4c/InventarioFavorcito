@@ -7,7 +7,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:e2e": "cross-env NODE_ENV=test jest --runInBand --selectProjects e2e",
+    "test:unit": "jest --selectProjects unit",
     "format": "prettier --write ./src/",
     "format:check": "prettier --check ./src/",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d ./src/config/database.config.ts"

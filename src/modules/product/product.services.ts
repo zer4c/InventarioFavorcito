@@ -85,8 +85,8 @@ async function createProductHistory(
     productHistory.nameChanged = false;
     productHistory.isDeletedChanged = true;
   } else {
-    productHistory.isActiveChanged = !!product.isActive;
-    productHistory.nameChanged = !!product.name;
+    productHistory.isActiveChanged = 'isActive' in product;
+    productHistory.nameChanged = 'name' in product;
     productHistory.isDeletedChanged = false;
   }
   productHistory.productId = id;
