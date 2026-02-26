@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { createQueryRunner } from '../config/database.config';
 
-export async function withTransaction(req: Request, res: Response, next: NextFunction) {
+export async function withTransaction(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const queryRunner = await createQueryRunner();
   res.locals.queryRunner = queryRunner;
 

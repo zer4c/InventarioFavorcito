@@ -8,6 +8,7 @@ const router = Router();
 
 router.get('/:id', ProductController.getById);
 router.get('/', ProductController.getAll);
+router.get('/:id/history/', ProductController.getHistory);
 
 router.post(
   '/',
@@ -22,6 +23,5 @@ router.patch(
   ProductController.patchProduct,
 );
 router.delete('/:id', withTransaction, ProductController.deleteProduct);
-
 
 export default router;

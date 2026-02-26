@@ -3,6 +3,7 @@ import { AppDataSource } from '../../config/database.config';
 import { Product, ProductHistory } from './product.entities';
 import {
   ProductCreateType,
+  ProductHistoryResponse,
   ProductPatchType,
   ProductResponse,
 } from './product.schemas';
@@ -64,6 +65,15 @@ async function deleteProduct(queryRunner: QueryRunner, id: number) {
   await createProductHistory(queryRunner, id);
 }
 
+async function getHistory(id: number) {
+  const history = await AppDataSource.getRepository(Product)
+    .createQueryBuilder('product')
+    .where('product.id = :id', { id })
+    .leftJoinAndSelect('product.history', 'history')
+    .getOneOrFail();
+  return ProductHistoryResponse.parse(history);
+}
+
 async function createProductHistory(
   queryRunner: QueryRunner,
   id: number,
@@ -71,13 +81,13 @@ async function createProductHistory(
 ) {
   const productHistory = new ProductHistory();
   if (!product) {
-    productHistory.IsActiveChanged = false;
-    productHistory.NameChanged = false;
-    productHistory.isDeletedChange = true;
+    productHistory.isActiveChanged = false;
+    productHistory.nameChanged = false;
+    productHistory.isDeletedChanged = true;
   } else {
-    productHistory.IsActiveChanged = !!product.isActive;
-    productHistory.NameChanged = !!product.name;
-    productHistory.isDeletedChange = false;
+    productHistory.isActiveChanged = !!product.isActive;
+    productHistory.nameChanged = !!product.name;
+    productHistory.isDeletedChanged = false;
   }
   productHistory.productId = id;
   await queryRunner.manager.save(ProductHistory, productHistory);
@@ -89,4 +99,5 @@ export default {
   createProduct,
   patchProduct,
   deleteProduct,
+  getHistory,
 };

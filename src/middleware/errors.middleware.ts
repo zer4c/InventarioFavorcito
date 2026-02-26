@@ -14,6 +14,7 @@ export function errorMiddleware(
       ok: false,
     });
   }
+  console.log(error);
   return res.status(500).send({
     detail: 'internal server error',
     ok: false,

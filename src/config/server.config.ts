@@ -6,6 +6,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(appRoutes);
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
 export default app;

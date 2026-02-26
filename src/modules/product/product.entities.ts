@@ -17,10 +17,10 @@ export class Product {
   @Column({ unique: true })
   name!: string;
 
-  @Column({default: true})
+  @Column({ default: true })
   isActive!: boolean;
 
-  @Column({default: false})
+  @Column({ default: false })
   isDeleted!: boolean;
 
   @CreateDateColumn()
@@ -39,13 +39,13 @@ export class ProductHistory {
   id!: number;
 
   @Column()
-  NameChanged!: boolean;
+  nameChanged!: boolean;
 
   @Column()
-  IsActiveChanged!: boolean;
+  isActiveChanged!: boolean;
 
   @Column()
-  isDeletedChange!: boolean;
+  isDeletedChanged!: boolean;
 
   @Column()
   productId!: number;

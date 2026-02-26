@@ -14,7 +14,7 @@ export function validateData(schema: z.ZodObject<any, any>) {
         res.status(400).send({
           status: 400,
           ok: false,
-          detail: errorMessages
+          detail: errorMessages,
         });
       } else {
         res.status(500).send({

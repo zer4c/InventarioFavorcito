@@ -28,6 +28,19 @@ async function getById(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function getHistory(req: Request, res: Response, next: NextFunction) {
+  try {
+    const productHistory = await ProductService.getHistory(+req.params.id);
+    return res.status(200).send({
+      detail: 'changes history retrieved',
+      ok: true,
+      data: productHistory,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function createProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const queryRunner = res.locals.queryRunner as QueryRunner;
@@ -88,4 +101,5 @@ export default {
   createProduct,
   patchProduct,
   deleteProduct,
+  getHistory,
 };
