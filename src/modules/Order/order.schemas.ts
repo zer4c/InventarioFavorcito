@@ -5,7 +5,7 @@ const OrderBase = z.strictObject({
   clientName: z.string().trim().toLowerCase().min(5).max(50),
   address: z.string().trim().toLowerCase().min(5).max(50),
   stockRequired: z.int().min(1),
-  userID: z.int().min(0),
+  productId: z.int().min(0),
 });
 
 export const OrderCreate = OrderBase.extend({});
@@ -16,12 +16,5 @@ export const OrderResponse = z.object({
   state: OrderStatus,
 });
 
-export const OrderPatch = OrderCreate.extend({
-  state: OrderStatus.optional(),
-})
-  .partial()
-  .refine((data) => Object.keys(data).length > 0);
-
 export type OrderCreateType = z.infer<typeof OrderCreate>;
 export type OrderResponseType = z.infer<typeof OrderResponse>;
-export type OrderPatchType = z.infer<typeof OrderPatch>;

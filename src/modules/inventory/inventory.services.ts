@@ -11,7 +11,7 @@ async function getByIdProduct(idProduct: number) {
   return InventoryResponse.parse(inventory);
 }
 
-async function addStock(
+async function changeStock(
   queryRunner: QueryRunner,
   idProduct: number,
   inventory: InventoryCreateType,
@@ -21,7 +21,6 @@ async function addStock(
   });
   oldInventory.stock = oldInventory.stock + inventory.stock;
   const inventoryUpdated = await queryRunner.manager.save(oldInventory);
-  await addHistoryStock(queryRunner, idProduct, inventory.stock);
   return InventoryResponse.parse(inventoryUpdated);
 }
 
@@ -58,6 +57,7 @@ async function addHistoryStock(
 
 export default {
   getByIdProduct,
-  addStock,
+  changeStock,
   createInventory,
+  addHistoryStock
 };

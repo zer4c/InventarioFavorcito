@@ -33,7 +33,11 @@ export class Order {
   @Min(1)
   stockRequired!: number;
 
+  @Column()
+  @IsInt()
+  productId!: number
+
   @ManyToOne(() => Product, (product) => product.orders)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
   product!: Product;
 }

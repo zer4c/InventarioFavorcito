@@ -12,17 +12,3 @@ export const InventoryResponse = InventoryCreate.extend({
 
 export type InventoryCreateType = z.infer<typeof InventoryCreate>;
 export type InventoryResponseType = z.infer<typeof InventoryResponse>;
-
-const InventoryHistoryCreate = InventoryBase.extend({
-  isOut: z.boolean(),
-  OrderId: z.int().optional(),
-});
-
-const InventoryHistoryResponse = InventoryHistoryCreate.extend({
-  id: z.int(),
-});
-
-export type InventoryHistoryCreateType = z.infer<typeof InventoryHistoryCreate>;
-export type InventoryHistoryResponseType = z.infer<
-  typeof InventoryHistoryResponse
->;

@@ -2,13 +2,18 @@ import { NextFunction, Request, Response } from 'express';
 import { QueryRunner } from 'typeorm';
 import InventoryService from './inventory.services';
 
-async function addStock(req: Request, res: Response, next: NextFunction) {
+async function changeStock(req: Request, res: Response, next: NextFunction) {
   try {
     const queryRunner = res.locals.queryRunner as QueryRunner;
-    const InventoryStock = InventoryService.addStock(
+    const InventoryStock = InventoryService.changeStock(
       queryRunner,
       +req.params.id,
       req.body,
+    );
+    await InventoryService.addHistoryStock(
+      queryRunner,
+      +req.params.id,
+      req.body.stock,
     );
     return res.status(201).send({
       detail: 'stock added',
@@ -56,7 +61,7 @@ async function createInventory(
 }
 
 export default {
-  addStock,
+  changeStock,
   getByIdProduct,
   createInventory,
 };

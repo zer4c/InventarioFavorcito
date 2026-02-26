@@ -17,6 +17,6 @@ router.patch(
   '/',
   validateData(InventoryCreate),
   withTransaction,
-  InventoryController.addStock,
+  InventoryController.changeStock,
 );
 export default router;
