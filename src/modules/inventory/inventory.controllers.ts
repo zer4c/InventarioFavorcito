@@ -41,6 +41,19 @@ async function getByProductId(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function getHistory(req: Request, res: Response, next: NextFunction) {
+  try {
+    const inventoryHistory = await InventoryService.getHistory(+req.params.id);
+    return res.status(200).send({
+      detail: 'inventory history retrieved',
+      ok: true,
+      data: inventoryHistory,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function createInventory(
   req: Request,
   res: Response,
@@ -79,4 +92,5 @@ export default {
   changeStock,
   getByProductId,
   createInventory,
+  getHistory,
 };

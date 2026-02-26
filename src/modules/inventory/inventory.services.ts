@@ -58,9 +58,18 @@ async function addHistoryStock(
   await queryRunner.manager.save(InventoryHistory, newInventoryHistory);
 }
 
+async function getHistory(productId: number) {
+  const history = await AppDataSource.getRepository(InventoryHistory)
+    .createQueryBuilder('inventoryHistory')
+    .where('inventoryHistory.productId = :id', { id: productId })
+    .getMany();
+  return history;
+}
+
 export default {
   getByProductId,
   changeStock,
   createInventory,
   addHistoryStock,
+  getHistory,
 };
