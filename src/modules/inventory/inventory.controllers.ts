@@ -9,7 +9,7 @@ async function changeStock(req: Request, res: Response, next: NextFunction) {
     const InventoryStock = await InventoryService.changeStock(
       queryRunner,
       +req.params.id,
-      req.body,
+      req.body.stock,
     );
     await InventoryService.addHistoryStock(
       queryRunner,
@@ -48,15 +48,17 @@ async function createInventory(
 ) {
   try {
     const queryRunner = res.locals.queryRunner as QueryRunner;
-    const InventoryStock = await InventoryService.createInventory(
+    const inventoryStock = await InventoryService.createInventory(
       queryRunner,
       +req.params.id,
       req.body,
     );
+    await InventoryService.addHistoryStock(queryRunner, inventoryStock.productId, inventoryStock.stock);
+    
     return res.status(201).send({
       detail: 'stock added',
       ok: true,
-      data: InventoryStock,
+      data: inventoryStock,
     });
   } catch (error: any) {
     if (error.code === '23505') {

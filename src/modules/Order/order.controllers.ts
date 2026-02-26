@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import OrderService from './order.services';
 import inventoryServices from '../inventory/inventory.services';
 import { InventoryPatch } from '../inventory/inventory.schemas';
+import { ZodError } from 'zod';
+import { OrderResponseType } from './order.schemas';
+import { QueryRunner } from 'typeorm';
 
 async function getById(req: Request, res: Response, next: NextFunction) {
   try {
@@ -17,31 +20,53 @@ async function getById(req: Request, res: Response, next: NextFunction) {
 }
 
 async function createOrder(req: Request, res: Response, next: NextFunction) {
-  const queryRunner = res.locals.queryRunner;
+  const queryRunner = res.locals.queryRunner as QueryRunner;
+  let order: OrderResponseType | undefined;
+
   try {
-    const order = await OrderService.createOrder(queryRunner, req.body);
-    const inventory = InventoryPatch.parse({
-      stock: req.body.stockRequired,
-    });
-    await inventoryServices.changeStock(
-      queryRunner,
-      req.body.productId * -1,
-      inventory,
-    );
-    await inventoryServices.addHistoryStock(
-      queryRunner,
-      req.body.productId,
-      req.body.stockRequired,
-      order.id,
-    );
-    const orderSuccess = await OrderService.confirmOrder(queryRunner, order.id);
-    return res.status(200).send({
-      detail: 'Order Created',
-      ok: true,
-      data: orderSuccess,
-    });
+    order = await OrderService.createOrder(queryRunner, req.body);
+
+    await queryRunner.query('SAVEPOINT after_order');
+
+    try {
+      const stock = req.body.stockRequired * -1;
+      await inventoryServices.changeStock(
+        queryRunner,
+        req.body.productId,
+        stock,
+      );
+      await inventoryServices.addHistoryStock(
+        queryRunner,
+        req.body.productId,
+        req.body.stockRequired,
+        order.id,
+      );
+
+      const orderSuccess = await OrderService.confirmOrder(
+        queryRunner,
+        order.id,
+      );
+
+      await queryRunner.query('RELEASE SAVEPOINT after_order');
+
+      return res.status(201).send({
+        detail: 'Order Created',
+        ok: true,
+        data: orderSuccess,
+      });
+    } catch (errorBeetwen) {
+      await queryRunner.query('ROLLBACK TO SAVEPOINT after_order');
+      console.log(errorBeetwen);
+
+      const orderFailed = await OrderService.rejectOrder(queryRunner, order.id);
+
+      return res.status(201).send({
+        detail: 'Order created but rejected',
+        ok: true,
+        data: orderFailed,
+      });
+    }
   } catch (error) {
-    // TODO: const orderFailed = await OrderService.rejectOrder(queryRunner);
     next(error);
   }
 }

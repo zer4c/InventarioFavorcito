@@ -7,13 +7,13 @@ export function errorMiddleware(
   res: Response,
   _next: NextFunction,
 ) {
+  console.log(error);
   if (error instanceof EntityNotFoundError) {
     return res.status(404).send({
       detail: 'resource not found',
       ok: false,
     });
   }
-  console.log(error);
   return res.status(500).send({
     detail: 'internal server error',
     ok: false,

@@ -1,4 +1,4 @@
-import { QueryRunner } from 'typeorm';
+import { Or, QueryRunner } from 'typeorm';
 import { AppDataSource } from '../../config/database.config';
 import { Order } from './order.entities';
 import { OrderCreateType, OrderResponse } from './order.schemas';
@@ -17,26 +17,30 @@ async function createOrder(queryRunner: QueryRunner, order: OrderCreateType) {
     ...order,
     state: OrderStatus.enum.QUEUE,
   });
-  await queryRunner.commitTransaction();
+  console.log(newOrder);
   return OrderResponse.parse(newOrder);
 }
 
 async function confirmOrder(queryRunner: QueryRunner, idOrder: number) {
-  const order = await queryRunner.manager.save(Order, {
-    id: idOrder,
-    state: OrderStatus.enum.FINISHED,
-  });
-  return OrderResponse.parse(order);
+  const result = await queryRunner.manager
+    .createQueryBuilder()
+    .update(Order)
+    .set({ state: OrderStatus.enum.FINISHED })
+    .where('id = :id', { id : idOrder })
+    .returning('*')
+    .execute();
+  return OrderResponse.parse(result.raw[0]);
 }
 
 async function rejectOrder(queryRunner: QueryRunner, idOrder: number) {
-  queryRunner.rollbackTransaction();
-  const order = await queryRunner.manager.save(Order, {
-    id: idOrder,
-    state: OrderStatus.enum.CANCELLED,
-  });
-  queryRunner.commitTransaction();
-  return OrderResponse.parse(order);
+  const result = await queryRunner.manager
+    .createQueryBuilder()
+    .update(Order)
+    .set({ state: OrderStatus.enum.CANCELLED })
+    .where('id = :id', { id : idOrder })
+    .returning('*')
+    .execute();
+  return OrderResponse.parse(result.raw[0]);
 }
 
 export default {

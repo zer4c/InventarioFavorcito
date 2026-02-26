@@ -14,12 +14,12 @@ async function getByProductId(productId: number) {
 async function changeStock(
   queryRunner: QueryRunner,
   productId: number,
-  inventory: InventoryPatchType,
+  stock : number,
 ) {
   const oldInventory = await queryRunner.manager.findOneByOrFail(Inventory, {
     productId: productId,
   });
-  oldInventory.stock = oldInventory.stock + inventory.stock;
+  oldInventory.stock = oldInventory.stock + stock;
   const inventoryUpdated = await queryRunner.manager.save(oldInventory);
   return InventoryResponse.parse(inventoryUpdated);
 }
@@ -33,7 +33,6 @@ async function createInventory(
   newInventory.stock = inventory.stock;
   newInventory.productId = productId;
   const result = await queryRunner.manager.save(newInventory);
-  await addHistoryStock(queryRunner, productId, inventory.stock);
   return InventoryResponse.parse(result);
 }
 
