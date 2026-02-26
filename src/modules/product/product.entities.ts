@@ -17,7 +17,7 @@ export class Product {
   @Column({ unique: true })
   name!: string;
 
-  @Column()
+  @Column({default: true})
   isActive!: boolean;
 
   @Column({default: false})

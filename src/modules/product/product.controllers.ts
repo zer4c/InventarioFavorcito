@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { QueryRunner } from 'typeorm';
 import ProductService from './product.services';
 
 async function getAll(_req: Request, res: Response, next: NextFunction) {
@@ -29,46 +30,53 @@ async function getById(req: Request, res: Response, next: NextFunction) {
 
 async function createProduct(req: Request, res: Response, next: NextFunction) {
   try {
-    const bodyData = req.body;
-    const product = await ProductService.createProduct(bodyData);
-
+    const queryRunner = res.locals.queryRunner as QueryRunner;
+    const product = await ProductService.createProduct(queryRunner, req.body);
     return res.status(201).send({
       detail: 'product created',
       ok: true,
       data: product,
     });
-  } catch (error) {
-    // TODO: console
-    console.error(error);
+  } catch (error: any) {
+    if (error.code === '23505') {
+      return res.status(400).send({
+        detail: 'product name already exist',
+        ok: false,
+      });
+    }
     next(error);
   }
 }
 
 async function patchProduct(req: Request, res: Response, next: NextFunction) {
   try {
-    const prodId = +req.params.id;
-    const bodyData = req.body;
-    const product = await ProductService.patchProduct(prodId, bodyData);
-
+    const queryRunner = res.locals.queryRunner as QueryRunner;
+    const product = await ProductService.patchProduct(
+      queryRunner,
+      +req.params.id,
+      req.body,
+    );
     return res.status(200).send({
       detail: 'product updated',
       ok: true,
       data: product,
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === '23505') {
+      return res.status(400).send({
+        detail: 'product name already exist',
+        ok: false,
+      });
+    }
     next(error);
   }
 }
 
-async function deleteProduct(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+async function deleteProduct(req: Request, res: Response, next: NextFunction) {
   try {
-    const prodId = +req.params.id;
-    await ProductService.deleteProduct(prodId);
-    return res.status(204)
+    const queryRunner = res.locals.queryRunner as QueryRunner;
+    await ProductService.deleteProduct(queryRunner, +req.params.id);
+    return res.status(204).send();
   } catch (error) {
     next(error);
   }

@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource, QueryRunner } from 'typeorm';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './env.config';
 import 'reflect-metadata';
 
@@ -17,3 +17,10 @@ export const AppDataSource = new DataSource({
   migrationsTableName: 'migrations',
   migrationsTransactionMode: 'all',
 });
+
+export async function createQueryRunner() {
+  const queryRunner = AppDataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+  return queryRunner;
+}

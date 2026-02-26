@@ -1,3 +1,4 @@
+import { QueryRunner } from 'typeorm';
 import { AppDataSource } from '../../config/database.config';
 import { Product, ProductHistory } from './product.entities';
 import {
@@ -10,7 +11,7 @@ async function getById(id: number) {
   const product = await AppDataSource.getRepository(Product)
     .createQueryBuilder('product')
     .where('product.id = :id', { id })
-    .where('product.isDeleted = false')
+    .andWhere('product.isDeleted = false')
     .getOneOrFail();
   return ProductResponse.parse(product);
 }
@@ -23,33 +24,51 @@ async function getProducts() {
   return products.map((product) => ProductResponse.parse(product));
 }
 
-async function createProduct(product: ProductCreateType) {
-  const newProduct = await AppDataSource.getRepository(Product).save(product);
+async function createProduct(
+  queryRunner: QueryRunner,
+  product: ProductCreateType,
+) {
+  const newProduct = await queryRunner.manager.save(Product, product);
   return ProductResponse.parse(newProduct);
 }
 
-async function patchProduct(id: number, product: ProductPatchType) {
-  await getById(id);
-  const patchedProduct = await AppDataSource.getRepository(Product).save({
-    id,
-    ...product,
-  });
+async function patchProduct(
+  queryRunner: QueryRunner,
+  id: number,
+  product: ProductPatchType,
+) {
+  await queryRunner.manager.findOneByOrFail(Product, { id, isDeleted: false });
 
-  await createProductHistory(id, product);
-  return ProductResponse.parse(patchedProduct);
+  const result = await queryRunner.manager
+    .createQueryBuilder()
+    .update(Product)
+    .set(product)
+    .where('id = :id', { id })
+    .returning('*')
+    .execute();
+
+  await createProductHistory(queryRunner, id, product);
+  return ProductResponse.parse(result.raw[0]);
 }
 
-async function deleteProduct(id: number) {
-  await getById(id);
-  await AppDataSource.createQueryBuilder()
+async function deleteProduct(queryRunner: QueryRunner, id: number) {
+  await queryRunner.manager.findOneByOrFail(Product, { id, isDeleted: false });
+
+  await queryRunner.manager
+    .createQueryBuilder()
     .update(Product)
     .set({ isDeleted: true })
-    .where('id = :id ', { id })
+    .where('id = :id', { id })
     .execute();
-  await createProductHistory(id);
+
+  await createProductHistory(queryRunner, id);
 }
 
-async function createProductHistory(id: number, product?: ProductPatchType) {
+async function createProductHistory(
+  queryRunner: QueryRunner,
+  id: number,
+  product?: ProductPatchType,
+) {
   const productHistory = new ProductHistory();
   if (!product) {
     productHistory.IsActiveChanged = false;
@@ -58,10 +77,10 @@ async function createProductHistory(id: number, product?: ProductPatchType) {
   } else {
     productHistory.IsActiveChanged = !!product.isActive;
     productHistory.NameChanged = !!product.name;
+    productHistory.isDeletedChange = false;
   }
   productHistory.productId = id;
-
-  await AppDataSource.getRepository(ProductHistory).save(productHistory);
+  await queryRunner.manager.save(ProductHistory, productHistory);
 }
 
 export default {
