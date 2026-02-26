@@ -6,6 +6,7 @@ const router = Router();
 
 router.use('/check', healthRoutes);
 router.use('/product', productRoutes);
+router.use('/product/:id/inventory');
 
 router.use('/*path', (req, res) => {
   res.status(404).send({

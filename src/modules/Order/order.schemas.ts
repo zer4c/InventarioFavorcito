@@ -8,17 +8,19 @@ const OrderBase = z.strictObject({
   userID: z.int().min(0),
 });
 
-export const OrderCreate = OrderBase.extend({
-  state: OrderStatus.default('queue'),
-});
+export const OrderCreate = OrderBase.extend({});
 
-export const OrderResponse = OrderCreate.extend({
+export const OrderResponse = z.object({
+  ...OrderCreate.shape,
   id: z.int(),
+  state: OrderStatus,
 });
 
-export const OrderPatch = OrderCreate.partial().refine(
-  (data) => Object.keys(data).length > 0,
-);
+export const OrderPatch = OrderCreate.extend({
+  state: OrderStatus.optional(),
+})
+  .partial()
+  .refine((data) => Object.keys(data).length > 0);
 
 export type OrderCreateType = z.infer<typeof OrderCreate>;
 export type OrderResponseType = z.infer<typeof OrderResponse>;

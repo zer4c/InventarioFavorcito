@@ -19,6 +19,10 @@ export class Inventory {
   @Min(0)
   stock!: number;
 
+  @Column()
+  @IsInt()
+  productId!: number;
+
   @OneToOne(() => Product)
   @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
   product!: Product;
@@ -37,6 +41,14 @@ export class InventoryHistory {
   @Column()
   @IsBoolean()
   isOut!: boolean;
+
+  @Column()
+  @IsInt()
+  productId!: number;
+
+  @Column()
+  @IsInt()
+  orderId!: number;
 
   @OneToOne(() => Product)
   @JoinColumn({ name: 'productId', referencedColumnName: 'id' })

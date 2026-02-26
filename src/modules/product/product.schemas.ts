@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const ProductBase = z.strictObject({
-  name: z.string(),
+  name: z.string().trim().toLowerCase().min(1),
 });
 
 export const ProductCreate = ProductBase.extend({});
@@ -15,7 +15,7 @@ export const ProductResponse = z.object({
 
 export const ProductPatch = z
   .strictObject({
-    name: z.string().optional(),
+    name: z.string().trim().toLowerCase().min(1).optional(),
     isActive: z.boolean().optional(),
   })
   .refine((data) => Object.keys(data).length > 0);

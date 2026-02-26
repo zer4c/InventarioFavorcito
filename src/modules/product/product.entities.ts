@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Order } from '../Order/order.entities';
+import { Length } from 'class-validator';
 
 @Entity()
 export class Product {
@@ -15,6 +16,7 @@ export class Product {
   id!: number;
 
   @Column({ unique: true })
+  @Length(1)
   name!: string;
 
   @Column({ default: true })
