@@ -17,7 +17,6 @@ async function createOrder(queryRunner: QueryRunner, order: OrderCreateType) {
     ...order,
     state: OrderStatus.enum.QUEUE,
   });
-  console.log(newOrder);
   return OrderResponse.parse(newOrder);
 }
 
@@ -26,7 +25,7 @@ async function confirmOrder(queryRunner: QueryRunner, idOrder: number) {
     .createQueryBuilder()
     .update(Order)
     .set({ state: OrderStatus.enum.FINISHED })
-    .where('id = :id', { id : idOrder })
+    .where('id = :id', { id: idOrder })
     .returning('*')
     .execute();
   return OrderResponse.parse(result.raw[0]);
@@ -37,7 +36,7 @@ async function rejectOrder(queryRunner: QueryRunner, idOrder: number) {
     .createQueryBuilder()
     .update(Order)
     .set({ state: OrderStatus.enum.CANCELLED })
-    .where('id = :id', { id : idOrder })
+    .where('id = :id', { id: idOrder })
     .returning('*')
     .execute();
   return OrderResponse.parse(result.raw[0]);

@@ -56,7 +56,6 @@ async function createOrder(req: Request, res: Response, next: NextFunction) {
       });
     } catch (errorBeetwen) {
       await queryRunner.query('ROLLBACK TO SAVEPOINT after_order');
-      console.log(errorBeetwen);
 
       const orderFailed = await OrderService.rejectOrder(queryRunner, order.id);
 

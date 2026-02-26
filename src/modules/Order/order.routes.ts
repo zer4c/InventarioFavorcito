@@ -14,4 +14,4 @@ router.post(
   OrderController.createOrder,
 );
 
-export default router
+export default router;

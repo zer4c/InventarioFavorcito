@@ -1,12 +1,16 @@
 import { QueryRunner } from 'typeorm';
 import { AppDataSource } from '../../config/database.config';
 import { Inventory, InventoryHistory } from './inventory.entities';
-import { InventoryCreateType, InventoryPatchType, InventoryResponse } from './inventory.schemas';
+import {
+  InventoryCreateType,
+  InventoryPatchType,
+  InventoryResponse,
+} from './inventory.schemas';
 
 async function getByProductId(productId: number) {
   const inventory = await AppDataSource.getRepository(Inventory)
     .createQueryBuilder('inventory')
-    .where('inventory.productId = :productId', {productId })
+    .where('inventory.productId = :productId', { productId })
     .getOneOrFail();
   return InventoryResponse.parse(inventory);
 }
@@ -14,7 +18,7 @@ async function getByProductId(productId: number) {
 async function changeStock(
   queryRunner: QueryRunner,
   productId: number,
-  stock : number,
+  stock: number,
 ) {
   const oldInventory = await queryRunner.manager.findOneByOrFail(Inventory, {
     productId: productId,
@@ -58,5 +62,5 @@ export default {
   getByProductId,
   changeStock,
   createInventory,
-  addHistoryStock
+  addHistoryStock,
 };

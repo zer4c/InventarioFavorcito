@@ -17,4 +17,4 @@ export const InventoryPatch = z.object({
 
 export type InventoryCreateType = z.infer<typeof InventoryCreate>;
 export type InventoryResponseType = z.infer<typeof InventoryResponse>;
-export type InventoryPatchType = z.infer<typeof InventoryPatch>
+export type InventoryPatchType = z.infer<typeof InventoryPatch>;

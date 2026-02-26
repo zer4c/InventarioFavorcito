@@ -53,8 +53,12 @@ async function createInventory(
       +req.params.id,
       req.body,
     );
-    await InventoryService.addHistoryStock(queryRunner, inventoryStock.productId, inventoryStock.stock);
-    
+    await InventoryService.addHistoryStock(
+      queryRunner,
+      inventoryStock.productId,
+      inventoryStock.stock,
+    );
+
     return res.status(201).send({
       detail: 'stock added',
       ok: true,

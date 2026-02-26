@@ -35,7 +35,7 @@ export class Order {
 
   @Column()
   @IsInt()
-  productId!: number
+  productId!: number;
 
   @ManyToOne(() => Product, (product) => product.orders)
   @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
