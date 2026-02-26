@@ -1,28 +1,18 @@
 import request from 'supertest';
 import app from '../src/config/server.config';
 
-
-
-
 async function createProduct(name: string) {
   const res = await request(app).post('/product').send({ name });
   return res.body.data as { id: number; name: string };
 }
 
 async function createInventory(productId: number, stock: number) {
-  return request(app)
-    .post(`/product/${productId}/inventory`)
-    .send({ stock });
+  return request(app).post(`/product/${productId}/inventory`).send({ stock });
 }
 
 async function patchStock(productId: number, stock: number) {
-  return request(app)
-    .patch(`/product/${productId}/inventory`)
-    .send({ stock });
+  return request(app).patch(`/product/${productId}/inventory`).send({ stock });
 }
-
-
-
 
 describe('GET /product/:id/inventory', () => {
   it('Debe retornar el inventario de un producto existente', async () => {
@@ -57,14 +47,13 @@ describe('GET /product/:id/inventory', () => {
   });
 });
 
-
-
-
 describe('GET /product/:id/inventory/history', () => {
   it('Debe retornar historial vacío si no hubo movimientos', async () => {
     const product = await createProduct('silla');
 
-    const res = await request(app).get(`/product/${product.id}/inventory/history`);
+    const res = await request(app).get(
+      `/product/${product.id}/inventory/history`,
+    );
 
     expect(res.status).toBe(200);
     expect(res.body.ok).toBe(true);
@@ -77,7 +66,9 @@ describe('GET /product/:id/inventory/history', () => {
     const product = await createProduct('mesa');
     await createInventory(product.id, 20);
 
-    const res = await request(app).get(`/product/${product.id}/inventory/history`);
+    const res = await request(app).get(
+      `/product/${product.id}/inventory/history`,
+    );
 
     expect(res.status).toBe(200);
     expect(res.body.data).toHaveLength(1);
@@ -91,10 +82,12 @@ describe('GET /product/:id/inventory/history', () => {
     await createInventory(product.id, 5);
     await patchStock(product.id, 3);
 
-    const res = await request(app).get(`/product/${product.id}/inventory/history`);
+    const res = await request(app).get(
+      `/product/${product.id}/inventory/history`,
+    );
 
     expect(res.body.data).toHaveLength(2);
-    
+
     expect(res.body.data[1].stock).toBe(3);
     expect(res.body.data[1].isOut).toBe(false);
   });
@@ -105,14 +98,13 @@ describe('GET /product/:id/inventory/history', () => {
     await patchStock(product.id, 5);
     await patchStock(product.id, 2);
 
-    const res = await request(app).get(`/product/${product.id}/inventory/history`);
+    const res = await request(app).get(
+      `/product/${product.id}/inventory/history`,
+    );
 
     expect(res.body.data).toHaveLength(3);
   });
 });
-
-
-
 
 describe('POST /product/:id/inventory', () => {
   it('Debe crear inventario correctamente con stock válido', async () => {
@@ -191,14 +183,10 @@ describe('POST /product/:id/inventory', () => {
   it('Debe retornar 500 si el productId no existe en la tabla Product (FK violation)', async () => {
     const res = await createInventory(9999, 10);
 
-    
     expect(res.status).toBe(500);
     expect(res.body.ok).toBe(false);
   });
 });
-
-
-
 
 describe('PATCH /product/:id/inventory', () => {
   it('Debe agregar stock correctamente', async () => {
@@ -210,7 +198,7 @@ describe('PATCH /product/:id/inventory', () => {
     expect(res.status).toBe(201);
     expect(res.body.ok).toBe(true);
     expect(res.body.detail).toBe('stock added');
-    expect(res.body.data.stock).toBe(15); 
+    expect(res.body.data.stock).toBe(15);
     expect(res.body.data.productId).toBe(product.id);
   });
 
@@ -222,7 +210,7 @@ describe('PATCH /product/:id/inventory', () => {
     await patchStock(product.id, 5);
     const res = await patchStock(product.id, 3);
 
-    expect(res.body.data.stock).toBe(18); 
+    expect(res.body.data.stock).toBe(18);
   });
 
   it('Debe retornar 400 si el stock es 0 (min(1) en InventoryPatch)', async () => {
