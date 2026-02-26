@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Order } from '../Order/order.entities';
 import { Length } from 'class-validator';
+import { InventoryHistory } from '../inventory/inventory.entities';
 
 @Entity()
 export class Product {
@@ -30,6 +31,12 @@ export class Product {
 
   @OneToMany(() => ProductHistory, (history) => history.product)
   history!: ProductHistory[];
+
+  @OneToMany(
+    () => InventoryHistory,
+    (inventoryHistory) => inventoryHistory.product,
+  )
+  inventoryHistory!: InventoryHistory;
 
   @OneToMany(() => Order, (order) => order.product)
   orders!: Order[];

@@ -5,6 +5,7 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Product } from '../product/product.entities';
 import { Order } from '../Order/order.entities';
@@ -46,11 +47,11 @@ export class InventoryHistory {
   @IsInt()
   productId!: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   @IsInt()
   orderId!: number;
 
-  @OneToOne(() => Product)
+  @ManyToOne(() => Product, (product) => product.inventoryHistory)
   @JoinColumn({ name: 'productId', referencedColumnName: 'id' })
   product!: Product;
 

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import OrderService from './order.services';
 import inventoryServices from '../inventory/inventory.services';
-import { InventoryCreate } from '../inventory/inventory.schemas';
+import { InventoryPatch } from '../inventory/inventory.schemas';
 
 async function getById(req: Request, res: Response, next: NextFunction) {
   try {
@@ -20,12 +20,12 @@ async function createOrder(req: Request, res: Response, next: NextFunction) {
   const queryRunner = res.locals.queryRunner;
   try {
     const order = await OrderService.createOrder(queryRunner, req.body);
-    const inventory = InventoryCreate.parse({
-      stock: req.body.stockRequired * -1,
+    const inventory = InventoryPatch.parse({
+      stock: req.body.stockRequired,
     });
     await inventoryServices.changeStock(
       queryRunner,
-      req.body.productId,
+      req.body.productId * -1,
       inventory,
     );
     await inventoryServices.addHistoryStock(

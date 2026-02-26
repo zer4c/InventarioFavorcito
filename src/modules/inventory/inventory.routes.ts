@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import InventoryController from './inventory.controllers';
 import { validateData } from '../../middleware/validate.middleware';
-import { InventoryCreate } from './inventory.schemas';
+import { InventoryCreate, InventoryPatch } from './inventory.schemas';
 import { withTransaction } from '../../middleware/transaction.middleware';
 
 const router = Router({ mergeParams: true });
@@ -15,7 +15,7 @@ router.post(
 );
 router.patch(
   '/',
-  validateData(InventoryCreate),
+  validateData(InventoryPatch),
   withTransaction,
   InventoryController.changeStock,
 );

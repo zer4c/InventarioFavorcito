@@ -1,7 +1,7 @@
 import { QueryRunner } from 'typeorm';
 import { AppDataSource } from '../../config/database.config';
 import { Inventory, InventoryHistory } from './inventory.entities';
-import { InventoryCreateType, InventoryResponse } from './inventory.schemas';
+import { InventoryCreateType, InventoryPatchType, InventoryResponse } from './inventory.schemas';
 
 async function getByProductId(productId: number) {
   const inventory = await AppDataSource.getRepository(Inventory)
@@ -14,7 +14,7 @@ async function getByProductId(productId: number) {
 async function changeStock(
   queryRunner: QueryRunner,
   productId: number,
-  inventory: InventoryCreateType,
+  inventory: InventoryPatchType,
 ) {
   const oldInventory = await queryRunner.manager.findOneByOrFail(Inventory, {
     productId: productId,
