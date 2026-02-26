@@ -13,5 +13,10 @@ router.post(
   withTransaction,
   InventoryController.createInventory,
 );
-router.patch('/', validateData(InventoryCreate), InventoryController.addStock);
+router.patch(
+  '/',
+  validateData(InventoryCreate),
+  withTransaction,
+  InventoryController.addStock,
+);
 export default router;
