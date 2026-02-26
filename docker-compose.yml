@@ -10,3 +10,15 @@ services:
       - '${DB_PORT}:${DB_PORT}'
     volumes:
       - .database-pg:/var/lib/postgresql
+
+  postgres-test:
+    image: postgres:18
+    container_name: postgres-db-test
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '${DB_TEST_PORT}:${DB_PORT}'
+    volumes:
+      - .database-pg-test:/var/lib/postgresql

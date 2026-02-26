@@ -1,5 +1,5 @@
 .database-pg/**/*
-
+.database-pg-test/**/*
 # Contains all your dependencies
 node_modules
 
