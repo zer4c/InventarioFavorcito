@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { EntityNotFoundError } from 'typeorm';
-import { ZodError } from 'zod';
 
 export function errorMiddleware(
   error: unknown,

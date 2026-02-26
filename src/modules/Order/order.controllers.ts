@@ -20,7 +20,9 @@ async function createOrder(req: Request, res: Response, next: NextFunction) {
   const queryRunner = res.locals.queryRunner;
   try {
     const order = await OrderService.createOrder(queryRunner, req.body);
-    const inventory = InventoryCreate.parse({ stock: req.body.stockRequired });
+    const inventory = InventoryCreate.parse({
+      stock: req.body.stockRequired * -1,
+    });
     await inventoryServices.changeStock(
       queryRunner,
       req.body.productId,

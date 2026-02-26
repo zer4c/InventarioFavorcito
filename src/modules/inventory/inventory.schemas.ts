@@ -5,7 +5,8 @@ const InventoryBase = z.strictObject({
 });
 
 export const InventoryCreate = InventoryBase.extend({});
-export const InventoryResponse = InventoryCreate.extend({
+export const InventoryResponse = z.object({
+  ...InventoryCreate.shape,
   id: z.int(),
   productId: z.int().min(0),
 });

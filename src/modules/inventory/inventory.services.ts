@@ -3,21 +3,21 @@ import { AppDataSource } from '../../config/database.config';
 import { Inventory, InventoryHistory } from './inventory.entities';
 import { InventoryCreateType, InventoryResponse } from './inventory.schemas';
 
-async function getByIdProduct(idProduct: number) {
+async function getByProductId(productId: number) {
   const inventory = await AppDataSource.getRepository(Inventory)
     .createQueryBuilder('inventory')
-    .where('inventory.productId = :id', { idProduct })
+    .where('inventory.productId = :productId', {productId })
     .getOneOrFail();
   return InventoryResponse.parse(inventory);
 }
 
 async function changeStock(
   queryRunner: QueryRunner,
-  idProduct: number,
+  productId: number,
   inventory: InventoryCreateType,
 ) {
   const oldInventory = await queryRunner.manager.findOneByOrFail(Inventory, {
-    productId: idProduct,
+    productId: productId,
   });
   oldInventory.stock = oldInventory.stock + inventory.stock;
   const inventoryUpdated = await queryRunner.manager.save(oldInventory);
@@ -26,26 +26,26 @@ async function changeStock(
 
 async function createInventory(
   queryRunner: QueryRunner,
-  idProduct: number,
+  productId: number,
   inventory: InventoryCreateType,
 ) {
   const newInventory = new Inventory();
   newInventory.stock = inventory.stock;
-  newInventory.productId = idProduct;
+  newInventory.productId = productId;
   const result = await queryRunner.manager.save(newInventory);
-  await addHistoryStock(queryRunner, idProduct, inventory.stock);
+  await addHistoryStock(queryRunner, productId, inventory.stock);
   return InventoryResponse.parse(result);
 }
 
 async function addHistoryStock(
   queryRunner: QueryRunner,
-  idProduct: number,
+  productId: number,
   stock: number,
   orderId?: number,
 ) {
   const newInventoryHistory = new InventoryHistory();
   newInventoryHistory.stock = stock;
-  newInventoryHistory.productId = idProduct;
+  newInventoryHistory.productId = productId;
   if (orderId) {
     newInventoryHistory.orderId = orderId;
     newInventoryHistory.isOut = true;
@@ -56,7 +56,7 @@ async function addHistoryStock(
 }
 
 export default {
-  getByIdProduct,
+  getByProductId,
   changeStock,
   createInventory,
   addHistoryStock

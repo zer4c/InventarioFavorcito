@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { QueryRunner } from 'typeorm';
 import InventoryService from './inventory.services';
+import { isInstance } from 'class-validator';
 
 async function changeStock(req: Request, res: Response, next: NextFunction) {
   try {
     const queryRunner = res.locals.queryRunner as QueryRunner;
-    const InventoryStock = InventoryService.changeStock(
+    const InventoryStock = await InventoryService.changeStock(
       queryRunner,
       +req.params.id,
       req.body,
@@ -25,9 +26,11 @@ async function changeStock(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function getByIdProduct(req: Request, res: Response, next: NextFunction) {
+async function getByProductId(req: Request, res: Response, next: NextFunction) {
   try {
-    const InventoryStock = InventoryService.getByIdProduct(+req.params.id);
+    const InventoryStock = await InventoryService.getByProductId(
+      +req.params.id,
+    );
     return res.status(200).send({
       detail: 'stock product retrieved',
       ok: true,
@@ -45,7 +48,7 @@ async function createInventory(
 ) {
   try {
     const queryRunner = res.locals.queryRunner as QueryRunner;
-    const InventoryStock = InventoryService.createInventory(
+    const InventoryStock = await InventoryService.createInventory(
       queryRunner,
       +req.params.id,
       req.body,
@@ -55,13 +58,19 @@ async function createInventory(
       ok: true,
       data: InventoryStock,
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === '23505') {
+      return res.status(400).send({
+        detail: 'id product already exist',
+        ok: false,
+      });
+    }
     next(error);
   }
 }
 
 export default {
   changeStock,
-  getByIdProduct,
+  getByProductId,
   createInventory,
 };

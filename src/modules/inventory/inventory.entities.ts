@@ -46,7 +46,7 @@ export class InventoryHistory {
   @IsInt()
   productId!: number;
 
-  @Column()
+  @Column({nullable: true})
   @IsInt()
   orderId!: number;
 

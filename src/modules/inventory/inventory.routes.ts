@@ -6,7 +6,7 @@ import { withTransaction } from '../../middleware/transaction.middleware';
 
 const router = Router({ mergeParams: true });
 
-router.get('/', InventoryController.getByIdProduct);
+router.get('/', InventoryController.getByProductId);
 router.post(
   '/',
   validateData(InventoryCreate),
