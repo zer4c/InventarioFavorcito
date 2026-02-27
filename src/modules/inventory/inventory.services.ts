@@ -20,12 +20,22 @@ async function changeStock(
   productId: number,
   stock: number,
 ) {
-  const oldInventory = await queryRunner.manager.findOneByOrFail(Inventory, {
-    productId: productId,
-  });
-  oldInventory.stock = oldInventory.stock + stock;
-  const inventoryUpdated = await queryRunner.manager.save(oldInventory);
-  return InventoryResponse.parse(inventoryUpdated);
+  await queryRunner.manager.findOneByOrFail(Inventory, { productId });
+
+  const result = await queryRunner.manager
+    .createQueryBuilder()
+    .update(Inventory)
+    .set({ stock: () => `stock + :stock` })
+    .where('productId = :productId', { productId })
+    .andWhere(`stock + :stock >= 0`, { stock })
+    .returning('*')
+    .execute();
+
+  if (result.affected === 0) {
+    result.raw[0].stock = -1;
+  }
+
+  return InventoryResponse.parse(result.raw[0]);
 }
 
 async function createInventory(

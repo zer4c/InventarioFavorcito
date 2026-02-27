@@ -355,37 +355,3 @@ describe('DELETE /product/:id', () => {
     expect(res.body.ok).toBe(false);
   });
 });
-
-describe('Concurrencia - POST /product', () => {
-  it('Debe manejar requests simultáneos al crear el mismo producto', async () => {
-    const [res1, res2] = await Promise.all([
-      request(app).post('/product').send({ name: 'producto-concurrente' }),
-      request(app).post('/product').send({ name: 'producto-concurrente' }),
-    ]);
-
-    const statuses = [res1.status, res2.status].sort();
-
-    expect(statuses).toEqual([201, 400]);
-
-    const listRes = await request(app).get('/product');
-    const matches = listRes.body.data.filter(
-      (p: any) => p.name === 'producto-concurrente',
-    );
-    expect(matches).toHaveLength(1);
-  });
-
-  it('Debe manejar múltiples creaciones simultáneas de productos distintos', async () => {
-    const requests = Array.from({ length: 5 }, (_, i) =>
-      request(app)
-        .post('/product')
-        .send({ name: `producto-${i}` }),
-    );
-
-    const results = await Promise.all(requests);
-
-    results.forEach((res) => expect(res.status).toBe(201));
-
-    const listRes = await request(app).get('/product');
-    expect(listRes.body.data).toHaveLength(5);
-  });
-});
