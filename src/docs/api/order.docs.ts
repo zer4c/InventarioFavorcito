@@ -1,6 +1,6 @@
 import { registry } from '../../config/swagger.config';
 import { z } from 'zod';
-import { OrderResponse } from '../../modules/Order/order.schemas';
+import { OrderCreate, OrderResponse } from '../../modules/Order/order.schemas';
 import { ErrorResponseDoc } from '../responses.docs';
 import ExampleErrorDoc from '../examples.docs';
 
@@ -54,6 +54,16 @@ registry.registerPath({
   description:
     'Crear una orden, este entra en un estado inical de QUEUE (si no hay error antes), luego dependiendo del stock requerido, se termina cambiando a un estado \"FINISHED\" o \"CANCELLED\". En caso que sea \"FINISHED\" se guardara el registro de cambio de stock en InventoryHistory',
   tags: ['Order'],
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: OrderCreate,
+        },
+      },
+      required: true,
+    },
+  },
   responses: {
     201: {
       description: 'Orden creada, solo cambia el estado',
@@ -72,7 +82,7 @@ registry.registerPath({
       content: {
         'application/json': {
           schema: ErrorResponseDoc,
-          example: ExampleErrorDoc.ServerError,
+          example: ExampleErrorDoc.EntityNotFound,
         },
       },
     },
