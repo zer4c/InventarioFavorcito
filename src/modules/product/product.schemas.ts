@@ -5,7 +5,6 @@ extendZodWithOpenApi(z);
 
 const ProductBase = z.strictObject({
   name: z.string().trim().toLowerCase().min(1).openapi({
-    description: 'Nombre del producto',
     example: 'Coca Cola',
   }),
 });

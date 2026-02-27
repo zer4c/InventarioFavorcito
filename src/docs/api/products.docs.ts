@@ -28,6 +28,15 @@ registry.registerPath({
         },
       },
     },
+    500: {
+      description: 'Error de servidor',
+      content: {
+        'application/json': {
+          schema: ErrorResponseDoc,
+          example: ExampleErrorDoc.ServerError,
+        },
+      },
+    },
   },
 });
 

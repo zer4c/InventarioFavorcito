@@ -6,6 +6,6 @@ const COrderStatus = {
   CANCELLED: 'cancelled',
 } as const;
 
-export const OrderStatus = z.enum(COrderStatus);
+export const OrderStatus = z.enum(COrderStatus).openapi('OrderStatusEnum');
 
 export type OrderStatusType = z.infer<typeof OrderStatus>;
