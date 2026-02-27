@@ -1,6 +1,5 @@
 import { DataSource, QueryRunner } from 'typeorm';
 import {
-  SERVER_PORT,
   DB_TEST_PORT,
   DB_HOST,
   DB_NAME,
