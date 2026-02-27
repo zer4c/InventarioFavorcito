@@ -1,19 +1,24 @@
 # Instrucciones de instalacion
 
-Para clonar el repositorio utilice en local.
-```
-git clone git@github.com:zer4c/InventarioFavorcito.git
-```
-
 ## Dependecias
 
-El proyecto usa
+El proyecto usa:
 
 - nodejs v20
 - npm v10.8.2
 - docker
+- nvm (opcional)
 
 ## instalacion
+
+El proyecto utilizo nvm para manejar las versiones de nodejs, para instalacion y configuracion consulte
+[instalacion de nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), una vez configurado la version de nodejs especificada, siga con la instalacion.
+
+Para clonar el repositorio utilice en local.
+
+```
+git clone git@github.com:zer4c/InventarioFavorcito.git
+```
 
 Para instalacion de dependencias utilice:
 
