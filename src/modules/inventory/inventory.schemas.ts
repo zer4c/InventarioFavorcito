@@ -1,4 +1,7 @@
 import { z } from 'zod';
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+
+extendZodWithOpenApi(z);
 
 const InventoryBase = z.strictObject({
   stock: z.int().min(0).openapi({
@@ -29,6 +32,29 @@ export const InventoryPatch = z
   })
   .openapi('InventoryPatch');
 
+export const InventoryHistoryResponse = z
+  .object({
+    id: z.int().min(0).openapi({
+      example: 1,
+    }),
+    stock: z.int().min(0).openapi({
+      example: 0,
+    }),
+    isOut: z.boolean().openapi({
+      example: true,
+    }),
+    productId: z.int().openapi({
+      example: 1,
+    }),
+    orderId: z.int().openapi({
+      example: 1,
+    }),
+  })
+  .openapi('InventoryHistoryResponse');
+
 export type InventoryCreateType = z.infer<typeof InventoryCreate>;
 export type InventoryResponseType = z.infer<typeof InventoryResponse>;
 export type InventoryPatchType = z.infer<typeof InventoryPatch>;
+export type InventoryHistoryResponseType = z.infer<
+  typeof InventoryHistoryResponse
+>;

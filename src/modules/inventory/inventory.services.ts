@@ -3,6 +3,7 @@ import { AppDataSource } from '../../config/database.config';
 import { Inventory, InventoryHistory } from './inventory.entities';
 import {
   InventoryCreateType,
+  InventoryHistoryResponse,
   InventoryPatchType,
   InventoryResponse,
 } from './inventory.schemas';
@@ -73,7 +74,7 @@ async function getHistory(productId: number) {
     .createQueryBuilder('inventoryHistory')
     .where('inventoryHistory.productId = :id', { id: productId })
     .getMany();
-  return history;
+  return InventoryHistoryResponse.parse(history);
 }
 
 export default {

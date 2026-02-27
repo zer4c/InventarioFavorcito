@@ -1,5 +1,8 @@
 import { z } from 'zod';
 import { OrderStatus } from '../../core/enums';
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+
+extendZodWithOpenApi(z);
 
 const OrderBase = z.strictObject({
   clientName: z.string().trim().toLowerCase().min(5).max(50).openapi({
