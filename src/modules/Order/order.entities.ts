@@ -6,7 +6,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { OrderStatus, OrderStatusType } from '../../core/enums';
-import { IsInt, Length, Min } from 'class-validator';
 import { Product } from '../product/product.entities';
 
 @Entity()
@@ -21,20 +20,15 @@ export class Order {
   state!: OrderStatusType;
 
   @Column()
-  @Length(5, 50)
   clientName!: string;
 
   @Column()
-  @Length(5, 50)
   address!: string;
 
   @Column()
-  @IsInt()
-  @Min(1)
   stockRequired!: number;
 
   @Column()
-  @IsInt()
   productId!: number;
 
   @ManyToOne(() => Product, (product) => product.orders)

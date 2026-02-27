@@ -1,4 +1,3 @@
-import { IsBoolean, IsInt, Min } from 'class-validator';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,12 +15,9 @@ export class Inventory {
   id!: number;
 
   @Column()
-  @IsInt()
-  @Min(0)
   stock!: number;
 
   @Column()
-  @IsInt()
   productId!: number;
 
   @OneToOne(() => Product)
@@ -35,20 +31,15 @@ export class InventoryHistory {
   id!: number;
 
   @Column()
-  @IsInt()
-  @Min(0)
   stock!: number;
 
   @Column()
-  @IsBoolean()
   isOut!: boolean;
 
   @Column()
-  @IsInt()
   productId!: number;
 
   @Column({ nullable: true })
-  @IsInt()
   orderId!: number;
 
   @ManyToOne(() => Product, (product) => product.inventoryHistory)
