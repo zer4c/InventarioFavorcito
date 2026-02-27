@@ -4,6 +4,7 @@ import ExampleErrorDoc from '../examples.docs';
 import {
   InventoryCreate,
   InventoryHistoryResponse,
+  InventoryPatch,
   InventoryResponse,
 } from '../../modules/inventory/inventory.schemas';
 import { ErrorResponseDoc } from '../responses.docs';
@@ -163,6 +164,10 @@ registry.registerPath({
   tags: ['inventory'],
   request: {
     params: z.object({ id: z.string().openapi({ example: '1' }) }),
+    body: {
+      content: { 'application/json': { schema: InventoryPatch } },
+      required: true,
+    },
   },
   responses: {
     200: {
