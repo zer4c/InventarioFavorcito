@@ -1,5 +1,10 @@
 # Instrucciones de instalacion
 
+Para clonar el repositorio utilice en local.
+```
+git clone git@github.com:zer4c/InventarioFavorcito.git
+```
+
 ## Dependecias
 
 El proyecto usa
