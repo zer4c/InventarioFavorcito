@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { QueryRunner } from 'typeorm';
 import InventoryService from './inventory.services';
-import { isInstance } from 'class-validator';
 
 async function changeStock(req: Request, res: Response, next: NextFunction) {
   try {

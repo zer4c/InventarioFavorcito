@@ -1,4 +1,4 @@
-import { Or, QueryRunner } from 'typeorm';
+import { QueryRunner } from 'typeorm';
 import { AppDataSource } from '../../config/database.config';
 import { Order } from './order.entities';
 import { OrderCreateType, OrderResponse } from './order.schemas';

@@ -1,4 +1,4 @@
-import { OrderCreate, OrderResponse } from './order.schemas';
+import { OrderResponse } from './order.schemas';
 import { OrderStatus } from '../../core/enums';
 
 describe('Caja Blanca - OrderResponse Schema (estados)', () => {
