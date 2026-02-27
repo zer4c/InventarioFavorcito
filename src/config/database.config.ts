@@ -7,10 +7,11 @@ import {
   DB_PASSWORD,
   DB_PORT,
   DB_USER,
+  NODE_ENV,
 } from './env.config';
 import 'reflect-metadata';
 
-const isTest = SERVER_PORT === 'test';
+const isTest = NODE_ENV === 'test';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
