@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { generateOpenAPIDocument } from '../config/swagger.config';
 import SwaggerUI from 'swagger-ui-express';
+import './api/inventory.docs';
 import './api/products.docs';
 import './api/order.docs';
 

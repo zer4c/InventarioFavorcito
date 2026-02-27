@@ -83,6 +83,12 @@ async function createInventory(
         ok: false,
       });
     }
+    if (error.code === '23503') {
+      return res.status(400).send({
+        detail: 'id product not exist',
+        ok: false,
+      });
+    }
     next(error);
   }
 }

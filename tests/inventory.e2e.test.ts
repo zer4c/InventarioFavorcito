@@ -180,10 +180,10 @@ describe('POST /product/:id/inventory', () => {
     expect(res.body.ok).toBe(false);
   });
 
-  it('Debe retornar 500 si el productId no existe en la tabla Product (FK violation)', async () => {
+  it('Debe retornar 400 si el productId no existe en la tabla Product (FK violation)', async () => {
     const res = await createInventory(9999, 10);
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400);
     expect(res.body.ok).toBe(false);
   });
 });

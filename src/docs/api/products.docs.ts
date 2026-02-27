@@ -87,7 +87,7 @@ registry.registerPath({
   path: '/product',
   summary: 'Crear producto',
   description:
-    'Crea un nuevo producto. No permite nombres repetidos, aunque esten eliminados',
+    'Crea un nuevo producto. No permite nombres repetidos, aunque esten eliminados, el stock se añade aparte en [inventory]',
   tags: ['Product'],
   request: {
     body: {

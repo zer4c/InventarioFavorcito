@@ -52,7 +52,7 @@ registry.registerPath({
   path: '/order/',
   summary: 'Crear una Orden',
   description:
-    'Crear una orden, este entra en un estado inical de QUEUE (si no hay error antes), luego dependiendo del stock requerido, se termina cambiando a un estado \"FINISHED\" o \"CANCELLED\". En caso que sea \"FINISHED\" se guardara el registro de cambio de stock en InventoryHistory',
+    'Crear una orden, este entra en un estado inical de QUEUE (si no hay error antes), luego dependiendo del stock requerido, se termina cambiando a un estado \"FINISHED\" o \"CANCELLED\". En caso que sea \"FINISHED\" se guardara el registro de cambio de stock en InventoryHistory y descontara el stock actual de Inventory del producto.',
   tags: ['Order'],
   request: {
     body: {
@@ -74,6 +74,15 @@ registry.registerPath({
             detail: z.literal('Order created but rejected'),
             data: OrderResponse,
           }),
+        },
+      },
+    },
+    400: {
+      description: 'campos inválidos',
+      content: {
+        'application/json': {
+          schema: ErrorResponseDoc,
+          example: ExampleErrorDoc.ZodError,
         },
       },
     },
