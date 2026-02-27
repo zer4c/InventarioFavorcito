@@ -74,7 +74,7 @@ async function getHistory(productId: number) {
     .createQueryBuilder('inventoryHistory')
     .where('inventoryHistory.productId = :id', { id: productId })
     .getMany();
-  return InventoryHistoryResponse.parse(history);
+  return history.map((hist) => InventoryHistoryResponse.parse(hist));
 }
 
 export default {

@@ -7,7 +7,6 @@ async function connectDatabase() {
     await AppDataSource.initialize();
     console.log('Database Connected');
   } catch (error) {
-    console.error(error);
     setTimeout(connectDatabase, 5000);
   }
 }

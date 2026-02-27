@@ -46,9 +46,16 @@ export const InventoryHistoryResponse = z
     productId: z.int().openapi({
       example: 1,
     }),
-    orderId: z.int().openapi({
+    orderId: z.int().nullable().openapi({
       example: 1,
     }),
+  })
+  .transform((data) => {
+    if (data.orderId === null) {
+      const { orderId, ...rest } = data;
+      return rest;
+    }
+    return data;
   })
   .openapi('InventoryHistoryResponse');
 
