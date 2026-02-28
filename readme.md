@@ -1,3 +1,5 @@
+**IMPORTANTE: el proyecto no se probó en un entorno con windows, solo en linux.**
+
 # Instrucciones de instalacion
 
 ## Dependecias
