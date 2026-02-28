@@ -62,6 +62,24 @@ Si el server esta levantado en localhost y con la informacion de env.example pre
 localhost:3000/docs/
 ```
 
+## Comandos utiles
+
+Para correr los test utilice
+
+```
+npm run test
+o
+npm run test:e2e
+o
+npm run test:unit
+```
+
+para generar migraciones
+
+```
+npm run migrate:generate -- "./migrations/nombremigracion"
+```
+
 # Explicación de decisiones técnicas
 
 Algunas desiciones tecnicas se explicaran en las medidas de seguridad.
