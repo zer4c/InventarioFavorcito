@@ -28,7 +28,7 @@ npm install
 
 ## Variables de Entorno
 
-Las variables de entorno requeridas para el proyecto estan en **.env.example**, para configurar cree un nuevo archivo **.env**, copie el contenido y personalice las variables de entorno, si ejecutara la aplicacion en local cambie:
+Las variables de entorno requeridas para el proyecto estan en **.env.example**, para configurar crea un nuevo archivo **.env**, copie el contenido y personalice las variables de entorno, si ejecutará la aplicacion en local cambie:
 
 ```
 DB_HOST=postgres a DB_HOST="localhost"
@@ -36,7 +36,7 @@ DB_HOST=postgres a DB_HOST="localhost"
 
 ## Script para creación de base de datos
 
-El proyecto implemento migraciones de la base de datos, para esto necesita ejecutar en su terminal:
+El proyecto implementó migraciones de la base de datos, para esto necesita ejecutar en su terminal:
 
 ```
 docker-compose up
